@@ -1,5 +1,6 @@
 package me.cyber.commands;
 
+import me.cyber.gui.GameSelector;
 import me.cyber.gui.tictactoe.Board;
 import me.cyber.model.TMode;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
@@ -17,16 +18,12 @@ public class DevCommand {
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> dispatcher.register(ClientCommandManager.literal("foo_client")
                 .executes(context -> {
 
-                    //context.getSource().sendFeedback(Text.literal("Opening"));
-
                     MinecraftClient client = context.getSource().getClient();
-                    client.send(() ->{
-                        client.setScreen(new Board(TMode.IMPOSSIBLE));
+                    client.send(() -> {
+                        client.setScreen(new GameSelector());
                     });
+
                     return 1;
-
-
                 })));
     }
-
 }

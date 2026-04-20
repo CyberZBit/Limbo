@@ -1,12 +1,10 @@
 package me.cyber.model;
 
-import me.cyber.gui.components.CustomFadeButton;
 import me.cyber.gui.tictactoe.SignButton;
 
 public class Slot {
-    private int pos;
-    private SignButton tButton;
-    private Sign sign;
+    private final int pos;
+    private final SignButton tButton;
 
     public Slot(SignButton tButton, int pos) {
         this.tButton = tButton;

@@ -12,11 +12,11 @@ public class Limbo implements ModInitializer {
 	public static final String MOD_ID = "limbo";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static MinecraftClient mc;
-	public static TPlayer currentGameMover;
+	//public static TPlayer currentGameMover;
 
 	@Override
 	public void onInitialize() {
-		currentGameMover = TPlayer.NONE;
+		//currentGameMover = TPlayer.NONE;
 		mc = MinecraftClient.getInstance();
 		LOGGER.info("Hello Fabric world!");
 		DevCommand.init();

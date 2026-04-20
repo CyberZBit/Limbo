@@ -47,6 +47,9 @@ public class TSolver {
         if (setMove(pos, TPlayer.COMPUTER, board)) {
             board.get(pos).setSign(Sign.X);
         }
+
+        //TODO: Easy mode and hard mode
+
     }
 
     /*

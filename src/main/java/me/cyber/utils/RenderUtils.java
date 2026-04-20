@@ -47,4 +47,11 @@ public class RenderUtils {
 
         matrices.popMatrix();
     }
+
+    /**
+     * Converts HEX colors to minecraft compatible colors.
+     */
+    public static int colorConvert(String hexcode){
+        return (0xFF << 24) | Integer.parseInt(hexcode.replace("#", ""), 16);
+    }
 }
