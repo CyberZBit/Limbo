@@ -48,8 +48,6 @@ public class TSolver {
             } else {
                 move = minimax(board, getRemeningSlots(board), TPlayer.COMPUTER);
                 pos = move[0];
-                System.out.println(Arrays.toString(move));
-                System.out.println(pos);
             }
 
             if (setMove(pos, TPlayer.COMPUTER, board)) {
@@ -59,7 +57,6 @@ public class TSolver {
 
 
         if (mode.equals(TMode.EASY)) {
-            System.out.println("s");
             if (getRemeningSlots(board) == 9) {
                 pos = (int) (Math.random() * 9) + 1;
             }
@@ -142,7 +139,6 @@ public class TSolver {
         for (int[] row : winCheckPatterns) {
             if (!board.get(row[0]).getSign().equals(Sign.EMPTY) && !board.get(row[1]).getSign().equals(Sign.EMPTY) && !board.get(row[2]).getSign().equals(Sign.EMPTY)) {
                 if (board.get(row[0]).getSign() == board.get(row[1]).getSign() && board.get(row[1]).getSign() == board.get(row[2]).getSign()) {
-                    //System.out.println("Found win in pattern: " + Arrays.toString(row));
 
                     winningPattern = new Object[]{row[0], row[1], row[2]};
                     return new Object[]{board.get(row[0]).getSign(), winningPattern};
@@ -164,9 +160,9 @@ public class TSolver {
     private static int evalute(HashMap<Integer, Slot> board) {
         int score = 0;
 
-        if (boardHasWin(board).equals(Sign.X)) {
+        if (boardHasWin(board)[0].equals(Sign.X)) {
             score += 1;
-        } else if (boardHasWin(board).equals(Sign.O)) {
+        } else if (boardHasWin(board)[0].equals(Sign.O)) {
             score -= 1;
         }
 

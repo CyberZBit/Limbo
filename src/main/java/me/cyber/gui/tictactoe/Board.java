@@ -42,7 +42,7 @@ public class Board extends Screen {
         //  this.parent = parent;
 
 
-        if(currentGameMode.equals(TMode.EASY) || currentGameMode.equals(TMode.HARD) || currentGameMode.equals(TMode.IMPOSSIBLE)){
+        if (currentGameMode.equals(TMode.EASY) || currentGameMode.equals(TMode.HARD) || currentGameMode.equals(TMode.IMPOSSIBLE)) {
 
             //The Human always always starts
             currentGameMover = TPlayer.HUMAN;
@@ -78,50 +78,43 @@ public class Board extends Screen {
                 int currentY = startY + (row * (buttonHeight + gap));
 
                 board.put(slotIndex, new Slot(new SignButton(currentX, currentY, buttonWidth, buttonHeight, color1, color2), slotIndex));
-                System.out.println(slotIndex);
                 slotIndex++;
             }
         }
 
         for (Slot button : board.values()) {
             int pos = button.getPos();
-            button.getButton().onClick(e ->{
+            button.getButton().onClick(e -> {
 
                 gameWinner = (Sign) TSolver.boardHasWin(board)[0];
-                System.out.println(TSolver.boardHasWin(board)[0]);
-                if(gameWinner.equals(Sign.EMPTY)){
-                    if(aiModes.contains(currentGameMode)){
-                        if(currentGameMover.equals(TPlayer.HUMAN)){
+                if (gameWinner.equals(Sign.EMPTY)) {
+                    if (aiModes.contains(currentGameMode)) {
+                        if (currentGameMover.equals(TPlayer.HUMAN)) {
 
-                            if(button.getSign().equals(Sign.EMPTY)){
-                                //if a player clicks the button
+                            if (button.getSign().equals(Sign.EMPTY)) {
                                 button.getButton().updateOwner(Sign.O);
 
                                 currentGameMover = TPlayer.COMPUTER;
                                 gameWinner = (Sign) TSolver.boardHasWin(board)[0];
                             }
-                            //if player made move then -> AI make move (Update the current player)
-
-                            //once the move is made check for win.
-
-                            //If board is full -> game done
-                            Sign winner = (Sign) TSolver.boardHasWin(board)[0];
-
                         }
 
-                        System.out.println(currentGameMode);
-                        if(currentGameMover.equals(TPlayer.COMPUTER) && gameWinner.equals(Sign.EMPTY) && !TSolver.getEmptySpots(board).isEmpty()){
-                                TSolver.aiTurn(board, currentGameMode);
-                                currentGameMover = TPlayer.HUMAN;
+                        if (currentGameMover.equals(TPlayer.COMPUTER) && gameWinner.equals(Sign.EMPTY) && !TSolver.getEmptySpots(board).isEmpty()) {
+                            TSolver.aiTurn(board, currentGameMode);
+                            currentGameMover = TPlayer.HUMAN;
                             gameWinner = (Sign) TSolver.boardHasWin(board)[0];
                         }
                     }
                 }
 
-                //Highlight winning patterns or losing
-                if(gameWinner.equals(Sign.X) || gameWinner.equals(Sign.O)){
-                    for (Object win : (Object[]) TSolver.boardHasWin(board)[1]){
-                        board.get(win).getButton().setWinningButton(true);
+                //Highlight winning/losing patterns
+                if (!gameWinner.equals(Sign.EMPTY)) {
+                    for (Object win : (Object[]) TSolver.boardHasWin(board)[1]) {
+                        if (gameWinner.equals(Sign.O)) {
+                            board.get(win).getButton().setWinningButton(true);
+                        } else if (gameWinner.equals(Sign.X)) {
+                            board.get(win).getButton().setLosingButton(true);
+                        }
                     }
                 }
             });
@@ -132,15 +125,14 @@ public class Board extends Screen {
         }
 
 
-        final int xbtn = (this.width / 2) - 80/2;
-        this.addDrawableChild(new LimboButton(xbtn, startY+185, 80, 25, Text.literal("Restart Game"), "#5e6b5a", 1f).onClick(e ->{
+        final int xbtn = (this.width / 2) - 80 / 2;
+        this.addDrawableChild(new LimboButton(xbtn, startY + 185, 80, 25, Text.literal("Restart Game"), "#5e6b5a", 1f).onClick(e -> {
             Limbo.mc.setScreen(new Board(currentGameMode));
         }));
 
-        this.addDrawableChild(new LimboButton(xbtn-45, startY+185, 15, 25, Text.literal("<"), "#092227", 1.5f).onClick(e ->{
+        this.addDrawableChild(new LimboButton(xbtn - 45, startY + 185, 15, 25, Text.literal("<"), "#092227", 1.5f).onClick(e -> {
             Limbo.mc.setScreen(new GameSelector());
         }));
-
 
 
     }
@@ -154,23 +146,18 @@ public class Board extends Screen {
                         (TSolver.getEmptySpots(board).isEmpty()) && gameWinner.equals(Sign.EMPTY) ? "Draw." : "");
 
 
-
         int tw = Limbo.mc.textRenderer.getWidth(winnerAnnounce);
         int th = 2;
 
-        int x1 =  (this.width / 2)-tw;
+        int x1 = (this.width / 2) - tw;
         int y1 = (this.height - th) / 2;
 
 
-        if(gameWinner.equals(Sign.O) || gameWinner.equals(Sign.X) || gameWinner.equals(Sign.EMPTY) && TSolver.getEmptySpots(board).isEmpty()){
-            RenderUtils.drawText(context, Limbo.mc.textRenderer, winnerAnnounce, x1, y1-120, 2,
+        if (gameWinner.equals(Sign.O) || gameWinner.equals(Sign.X) || gameWinner.equals(Sign.EMPTY) && TSolver.getEmptySpots(board).isEmpty()) {
+            RenderUtils.drawText(context, Limbo.mc.textRenderer, winnerAnnounce, x1, y1 - 120, 2,
                     gameWinner == Sign.O ? "#00ff00" : "#800000"
             );
         }
-
-
-
-
 
 
     }

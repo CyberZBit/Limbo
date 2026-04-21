@@ -21,6 +21,7 @@ public class SignButton extends LimboButton {
     private String hcolor;
     private Sign slotOwner;
     private boolean isWinningButton;
+    private boolean isLosingButton;
 
     public SignButton(int x, int y, int w, int h, String color, String hcolor) {
         super(x, y, w, h, color, hcolor);
@@ -29,7 +30,7 @@ public class SignButton extends LimboButton {
         this.hcolor = hcolor.replace("#", "");
         slotOwner = Sign.EMPTY;
         this.isWinningButton = false;
-
+        this.isLosingButton = false;
     }
 
 
@@ -56,10 +57,12 @@ public class SignButton extends LimboButton {
 
         } else {
 
-            if(!isWinningButton){
-                RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, RenderUtils.colorConvert("e3d5ca"));
-            }else{
+            if(isWinningButton){
                 RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, RenderUtils.colorConvert("#4f6d3a"));
+            } else if (isLosingButton) {
+                RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, RenderUtils.colorConvert("#f5554a"));
+            } else{
+                RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, RenderUtils.colorConvert("e3d5ca"));
             }
 
             if (getSign().equals(Sign.O)) {
@@ -86,5 +89,13 @@ public class SignButton extends LimboButton {
 
     public void setWinningButton(boolean winningButton) {
         isWinningButton = winningButton;
+    }
+
+    public boolean isLosingButton() {
+        return isLosingButton;
+    }
+
+    public void setLosingButton(boolean losingButton) {
+        isLosingButton = losingButton;
     }
 }
