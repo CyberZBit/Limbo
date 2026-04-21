@@ -7,7 +7,9 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.input.AbstractInput;
+import net.minecraft.client.util.ColorLerper;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.ColorHelper;
 
 //TODO: completely redo this button and make it more dynamic
 public class LimboButton extends PressableWidget {
@@ -18,6 +20,7 @@ public class LimboButton extends PressableWidget {
     private boolean buttonWithText;
     private Text buttonText;
     private float textScale;
+    private String buttonTextHex;
 
     public LimboButton(int x, int y, int w, int h, String color, String hcolor) {
         super(x, y, w, h, Text.literal(""));
@@ -37,7 +40,7 @@ public class LimboButton extends PressableWidget {
         buttonWithText = false;
     }
 
-    public LimboButton(int x, int y, int w, int h, Text buttonText) {
+    public LimboButton(int x, int y, int w, int h, Text buttonText, String hexColor) {
         super(x, y, w, h, Text.literal(""));
 
         //default white
@@ -46,9 +49,10 @@ public class LimboButton extends PressableWidget {
         buttonWithText = true;
         this.buttonText = buttonText;
         this.textScale = 1f;
+        this.buttonTextHex = hexColor;
     }
 
-    public LimboButton(int x, int y, int w, int h, Text buttonText, int textScale) {
+    public LimboButton(int x, int y, int w, int h, Text buttonText, String hexColor, float scale) {
         super(x, y, w, h, Text.literal(""));
 
         //default white
@@ -56,13 +60,14 @@ public class LimboButton extends PressableWidget {
         this.hcolor = "c5ea78";
         buttonWithText = true;
         this.buttonText = buttonText;
-        this.textScale = textScale;
+        this.textScale = scale == 0 ? 1f : scale;
+        this.buttonTextHex = hexColor;
     }
 
 
     public LimboButton onClick(CustomClick click) {
         this.listener = click;
-        return this; // Returning 'this' allows you to chain methods
+        return this;
     }
 
     @Override
@@ -98,13 +103,7 @@ public class LimboButton extends PressableWidget {
         int y1 = this.getY();
         int x2 = x1 + this.getWidth();
         int y2 = y1 + this.getHeight();
-
-
-
-
-        int baseColor = (0xFF << 24) | Integer.parseInt(color, 16);
-        int hoverColor = (0xFF << 24) | Integer.parseInt(hcolor, 16);
-
+        int m = this.width / 2;
         float animationSpeed = 0.15f * deltaTicks;
 
         if (this.isHovered()) {
@@ -113,17 +112,19 @@ public class LimboButton extends PressableWidget {
             hoverProgress = Math.max(0.0f, hoverProgress - animationSpeed);
         }
 
-        int currentColor = RenderUtils.lerpColor(baseColor, hoverColor, hoverProgress);
+        int currentColor = ColorHelper.lerp(hoverProgress, RenderUtils.colorConvert(color), RenderUtils.colorConvert(hcolor));
         RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, currentColor);
 
         if (buttonWithText) {
             int textWidth = Limbo.mc.textRenderer.getWidth(buttonText);
             int textHeight = Limbo.mc.textRenderer.fontHeight;
 
-            int tx = x1 + (this.getWidth() - textWidth) / 2;
+            int tx = textScale > 1f ? (int) (x1 + ((float) this.getWidth() / 2) - (textWidth / textScale)) : x1 + (this.getWidth() / 2) - (textWidth / 2);
             int ty = y1 + (this.getHeight() - textHeight) / 2;
 
-            RenderUtils.drawText(context, Limbo.mc.textRenderer, buttonText, tx, ty, ((textScale == 0) ? 1f : textScale), color);
+           // System.out.println(x1);
+
+            RenderUtils.drawText(context, Limbo.mc.textRenderer, buttonText, tx, ty, textScale, buttonTextHex);
         }
 
     }

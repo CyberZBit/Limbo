@@ -138,8 +138,8 @@ public class Board extends Screen {
         }
 
 
-        this.addDrawableChild(new LimboButton(startX+50, startY+185, 80, 25, Text.literal("Restart Game")).onClick(e ->{
-            Limbo.mc.setScreen(new Board(TMode.IMPOSSIBLE));
+        this.addDrawableChild(new LimboButton(startX+50, startY+185, 80, 25, Text.literal("Restart Game"), "#5e6b5a", 1f).onClick(e ->{
+            Limbo.mc.setScreen(new Board(currentGameMode));
         }));
 
     }
