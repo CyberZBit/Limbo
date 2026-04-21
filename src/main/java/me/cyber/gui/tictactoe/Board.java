@@ -1,6 +1,7 @@
 package me.cyber.gui.tictactoe;
 
 import me.cyber.Limbo;
+import me.cyber.gui.GameSelector;
 import me.cyber.gui.components.LimboButton;
 import me.cyber.model.Sign;
 import me.cyber.model.Slot;
@@ -24,27 +25,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 public class Board extends Screen {
-    private final Identifier WIN_FULL_TEXTURE = IdentifierUtils.of("textures/gui/win.png");
-    private final Identifier LOSE_TEXTURE = IdentifierUtils.of("textures/gui/game_over.png");
     private TMode currentGameMode;
     private final HashMap<Integer, Slot> board = new HashMap<>();
-    private final int[][] buttonCords = {
-            {100, 10}, {200, 10}, {300, 10},
-            {100, 110}, {200, 110}, {300, 110},
-            {100, 210}, {200, 210}, {300, 210}
-    };
-    private final int buttonHeight = 50;
-    private final int buttonWidth = 50;
     private final String color1 = "fffcf2";
     private final String color2 = "ccc5b9";
     private final List<TMode> aiModes = List.of(TMode.EASY, TMode.HARD, TMode.IMPOSSIBLE);
     private Sign gameWinner = Sign.EMPTY;
     private TPlayer currentGameMover;
 
-
-    private final int gridSize = 3;
-    private final int gap = 50;
-    private final int buttonSize = 30;
 
     // Screen parent;
     public Board(/*Screen parent*/TMode currentGameMode) {
@@ -119,16 +107,12 @@ public class Board extends Screen {
 
                         }
 
-                        if(currentGameMover.equals(TPlayer.COMPUTER)){
-                           // CompletableFuture.runAsync(() ->{
-                                TSolver.aiTurn(board);
+                        if(currentGameMover.equals(TPlayer.COMPUTER) && TSolver.boardHasWin(board).equals(Sign.EMPTY) && !TSolver.getEmptySpots(board).isEmpty()){
+                                TSolver.aiTurn(board, currentGameMode);
                                 currentGameMover = TPlayer.HUMAN;
                             gameWinner = TSolver.boardHasWin(board);
-                            //}, CompletableFuture.delayedExecutor(500, TimeUnit.MILLISECONDS));
                         }
                     }
-                }else{
-
                 }
             });
 
@@ -138,9 +122,16 @@ public class Board extends Screen {
         }
 
 
-        this.addDrawableChild(new LimboButton(startX+50, startY+185, 80, 25, Text.literal("Restart Game"), "#5e6b5a", 1f).onClick(e ->{
+        final int xbtn = (this.width / 2) - 80/2;
+        this.addDrawableChild(new LimboButton(xbtn, startY+185, 80, 25, Text.literal("Restart Game"), "#5e6b5a", 1f).onClick(e ->{
             Limbo.mc.setScreen(new Board(currentGameMode));
         }));
+
+        this.addDrawableChild(new LimboButton(xbtn-45, startY+185, 15, 25, Text.literal("<"), "#092227", 1.5f).onClick(e ->{
+            Limbo.mc.setScreen(new GameSelector());
+        }));
+
+
 
     }
 

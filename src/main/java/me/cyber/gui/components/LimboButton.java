@@ -103,7 +103,6 @@ public class LimboButton extends PressableWidget {
         int y1 = this.getY();
         int x2 = x1 + this.getWidth();
         int y2 = y1 + this.getHeight();
-        int m = this.width / 2;
         float animationSpeed = 0.15f * deltaTicks;
 
         if (this.isHovered()) {
@@ -121,8 +120,6 @@ public class LimboButton extends PressableWidget {
 
             int tx = textScale > 1f ? (int) (x1 + ((float) this.getWidth() / 2) - (textWidth / textScale)) : x1 + (this.getWidth() / 2) - (textWidth / 2);
             int ty = y1 + (this.getHeight() - textHeight) / 2;
-
-           // System.out.println(x1);
 
             RenderUtils.drawText(context, Limbo.mc.textRenderer, buttonText, tx, ty, textScale, buttonTextHex);
         }

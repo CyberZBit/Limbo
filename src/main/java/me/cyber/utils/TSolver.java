@@ -2,9 +2,12 @@ package me.cyber.utils;
 
 import me.cyber.model.Sign;
 import me.cyber.model.Slot;
+import me.cyber.model.TMode;
 import me.cyber.model.TPlayer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class TSolver {
     public static int getRemeningSlots(HashMap<Integer, Slot> slots) {
@@ -33,23 +36,44 @@ public class TSolver {
         return emptySpots;
     }
 
-    public static void aiTurn(HashMap<Integer, Slot> board) {
+    public static void aiTurn(HashMap<Integer, Slot> board, TMode mode) {
         int pos;
         int[] move;
 
-        if (getRemeningSlots(board) == 9) {
-            pos = (int) (Math.random() * 9) + 1;
-        } else {
-            move = minimax(board, getRemeningSlots(board), TPlayer.COMPUTER);
-            pos = move[0];
+        //TODO: Actually make a real Hard mode.
+        if (mode.equals(TMode.HARD) || mode.equals(TMode.IMPOSSIBLE)) {
+            if (getRemeningSlots(board) == 9) {
+                pos = (int) (Math.random() * 9) + 1;
+            } else {
+                move = minimax(board, getRemeningSlots(board), TPlayer.COMPUTER);
+                pos = move[0];
+            }
+
+            if (setMove(pos, TPlayer.COMPUTER, board)) {
+                board.get(pos).setSign(Sign.X);
+            }
         }
 
-        if (setMove(pos, TPlayer.COMPUTER, board)) {
-            board.get(pos).setSign(Sign.X);
+
+        //TODO: Easy mode
+        if (mode.equals(TMode.EASY)) {
+            if (getRemeningSlots(board) == 9) {
+                pos = (int) (Math.random() * 9) + 1;
+            }
+
+            List<Slot> emptySlots = new ArrayList<>(getEmptySpots(board).values());
+            int md = (int) (Math.random() * emptySlots.size());
+
+            for (Slot m : emptySlots) {
+                System.out.println("Available slot: " + m.getPos());
+            }
+            System.out.println("picking: " + emptySlots.get(md).getPos());
+            pos = emptySlots.get(md).getPos();
+
+            if (setMove(pos, TPlayer.COMPUTER, board)) {
+                board.get(pos).setSign(Sign.X);
+            }
         }
-
-        //TODO: Easy mode and hard mode
-
     }
 
     /*

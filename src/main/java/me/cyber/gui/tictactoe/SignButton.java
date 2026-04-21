@@ -7,6 +7,7 @@ import me.cyber.utils.RenderUtils;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.ColorHelper;
 
 /**
  * This class is used for the button inside the Tic-tac-toe board.
@@ -29,21 +30,6 @@ public class SignButton extends LimboButton {
 
     }
 
-    /*
-    public void onClick(CustomClick click) {
-        this.listener = click;
-    }
-
-    /*
-    @Override
-    public void onPress(AbstractInput input) {
-        if (listener != null) {
-            listener.onClick(input);
-        }
-    }
-
-     */
-
     //TODO: Use all utils methods and clean up.
     @Override
     protected void renderWidget(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
@@ -53,42 +39,29 @@ public class SignButton extends LimboButton {
         int y1 = this.getY();
         int x2 = x1 + this.getWidth();
         int y2 = y1 + this.getHeight();
-
-        int baseColor = (0xFF << 24) | Integer.parseInt(color, 16);
-        int hoverColor = (0xFF << 24) | Integer.parseInt(hcolor, 16);
-
         float animationSpeed = 0.15f * deltaTicks;
 
         if (this.slotOwner.equals(Sign.EMPTY)) {
+
             if (this.isHovered()) {
                 hoverProgress = Math.min(1.0f, hoverProgress + animationSpeed);
             } else {
                 hoverProgress = Math.max(0.0f, hoverProgress - animationSpeed);
             }
 
-            int currentColor = RenderUtils.lerpColor(baseColor, hoverColor, hoverProgress);
-
-
+            int currentColor = ColorHelper.lerp(hoverProgress, RenderUtils.colorConvert(color), RenderUtils.colorConvert(hcolor));
             RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, currentColor);
+
         } else {
-            int c = (0xFF << 24) | Integer.parseInt("e3d5ca", 16);
-            RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, c);
+            RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, RenderUtils.colorConvert("e3d5ca"));
 
             if (this.slotOwner.equals(Sign.O)) {
                 context.drawTexture(RenderPipelines.GUI_TEXTURED, O_TEXTURE, x1 , y1, 0.0F, 0.0F, 50, 50, 50, 50);
-
             } else if (this.slotOwner.equals(Sign.X)) {
-
                 context.drawTexture(RenderPipelines.GUI_TEXTURED, X_TEXTURE, x1, y1, 0.0F, 0.0F, 50, 50, 50, 50);
-
-
             }
 
         }
-
-        //int currentColor = RenderUtils.lerpColor(baseColor, hoverColor, hoverProgress);
-
-
     }
 
     public Sign getSign() {
