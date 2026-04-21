@@ -99,9 +99,8 @@ public class LimboButton extends PressableWidget {
         int x2 = x1 + this.getWidth();
         int y2 = y1 + this.getHeight();
 
-        if (buttonWithText) {
-            RenderUtils.drawText(context, Limbo.mc.textRenderer, buttonText, x1, y1, ((textScale == 0) ? 1f : textScale), color);
-        }
+
+
 
         int baseColor = (0xFF << 24) | Integer.parseInt(color, 16);
         int hoverColor = (0xFF << 24) | Integer.parseInt(hcolor, 16);
@@ -117,6 +116,15 @@ public class LimboButton extends PressableWidget {
         int currentColor = RenderUtils.lerpColor(baseColor, hoverColor, hoverProgress);
         RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, currentColor);
 
+        if (buttonWithText) {
+            int textWidth = Limbo.mc.textRenderer.getWidth(buttonText);
+            int textHeight = Limbo.mc.textRenderer.fontHeight;
+
+            int tx = x1 + (this.getWidth() - textWidth) / 2;
+            int ty = y1 + (this.getHeight() - textHeight) / 2;
+
+            RenderUtils.drawText(context, Limbo.mc.textRenderer, buttonText, tx, ty, ((textScale == 0) ? 1f : textScale), color);
+        }
 
     }
 

@@ -73,13 +73,13 @@ public class SignButton extends LimboButton {
         } else {
             int c = (0xFF << 24) | Integer.parseInt("e3d5ca", 16);
             RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, c);
+
             if (this.slotOwner.equals(Sign.O)) {
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, O_TEXTURE, x1 + 10, y1 + 10, 0.0F, 0.0F, 60, 60, 60, 60);
-                //RenderUtils.fillRoundedRect(context, x1, y1, x2, y2, c);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, O_TEXTURE, x1 , y1, 0.0F, 0.0F, 50, 50, 50, 50);
 
             } else if (this.slotOwner.equals(Sign.X)) {
 
-                context.drawTexture(RenderPipelines.GUI_TEXTURED, X_TEXTURE, x1, y1, 0.0F, 0.0F, 80, 80, 80, 80);
+                context.drawTexture(RenderPipelines.GUI_TEXTURED, X_TEXTURE, x1, y1, 0.0F, 0.0F, 50, 50, 50, 50);
 
 
             }
