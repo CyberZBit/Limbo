@@ -11,7 +11,7 @@ import net.minecraft.client.util.ColorLerper;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.ColorHelper;
 
-//TODO: completely redo this button and make it more dynamic
+//TODO: completely redo this button and make it more flexible
 public class LimboButton extends PressableWidget {
     private String color;
     private String hcolor;

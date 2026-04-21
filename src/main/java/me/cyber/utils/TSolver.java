@@ -6,6 +6,7 @@ import me.cyber.model.TMode;
 import me.cyber.model.TPlayer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class TSolver {
             } else {
                 move = minimax(board, getRemeningSlots(board), TPlayer.COMPUTER);
                 pos = move[0];
+                System.out.println(Arrays.toString(move));
+                System.out.println(pos);
             }
 
             if (setMove(pos, TPlayer.COMPUTER, board)) {
@@ -55,8 +58,8 @@ public class TSolver {
         }
 
 
-        //TODO: Easy mode
         if (mode.equals(TMode.EASY)) {
+            System.out.println("s");
             if (getRemeningSlots(board) == 9) {
                 pos = (int) (Math.random() * 9) + 1;
             }
@@ -64,10 +67,6 @@ public class TSolver {
             List<Slot> emptySlots = new ArrayList<>(getEmptySpots(board).values());
             int md = (int) (Math.random() * emptySlots.size());
 
-            for (Slot m : emptySlots) {
-                System.out.println("Available slot: " + m.getPos());
-            }
-            System.out.println("picking: " + emptySlots.get(md).getPos());
             pos = emptySlots.get(md).getPos();
 
             if (setMove(pos, TPlayer.COMPUTER, board)) {
@@ -76,10 +75,14 @@ public class TSolver {
         }
     }
 
-    /*
-            Algorithm by Cledersonbc from:
-            https://github.com/Cledersonbc/tic-tac-toe-minimax/
-         */
+    /**
+     * Algorithm by Cledersonbc from: https://github.com/Cledersonbc/tic-tac-toe-minimax/
+     *
+     * @param state  - Board
+     * @param depth  - Amount of moves left
+     * @param player - The player (COMPUTER OR HUMAN)
+     * @return move[0], score[1]
+     */
     public static int[] minimax(HashMap<Integer, Slot> state, int depth, TPlayer player) {
         int[] best;
 
@@ -89,7 +92,7 @@ public class TSolver {
             best = new int[]{-1, 1000};
         }
 
-        if (depth == 0 || !boardHasWin(state).equals(Sign.EMPTY) || getRemeningSlots(state) == 0) {
+        if (depth == 0 || !boardHasWin(state)[0].equals(Sign.EMPTY) || getRemeningSlots(state) == 0) {
             return new int[]{-1, evalute(state)};
         }
 
@@ -121,7 +124,13 @@ public class TSolver {
         return best;
     }
 
-    public static Sign boardHasWin(HashMap<Integer, Slot> board) {
+    /**
+     *
+     * @param board
+     * @return {Sign[0], obj[0,1,2](winning pattern)}
+     */
+    public static Object[] boardHasWin(HashMap<Integer, Slot> board) {
+        Object[] winningPattern;
         int[][] winCheckPatterns = {
                 {1, 2, 3}, {4, 5, 6},
                 {7, 8, 9}, {1, 4, 7},
@@ -133,12 +142,16 @@ public class TSolver {
         for (int[] row : winCheckPatterns) {
             if (!board.get(row[0]).getSign().equals(Sign.EMPTY) && !board.get(row[1]).getSign().equals(Sign.EMPTY) && !board.get(row[2]).getSign().equals(Sign.EMPTY)) {
                 if (board.get(row[0]).getSign() == board.get(row[1]).getSign() && board.get(row[1]).getSign() == board.get(row[2]).getSign()) {
-                    return board.get(row[0]).getSign();
+                    //System.out.println("Found win in pattern: " + Arrays.toString(row));
+
+                    winningPattern = new Object[]{row[0], row[1], row[2]};
+                    return new Object[]{board.get(row[0]).getSign(), winningPattern};
                 }
             }
         }
 
-        return Sign.EMPTY;
+
+        return new Object[]{Sign.EMPTY, winCheckPatterns};
     }
 
     public static boolean setMove(int pos, TPlayer player, HashMap<Integer, Slot> board) {

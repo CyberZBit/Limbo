@@ -19,6 +19,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.joml.Matrix3x2fStack;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -86,8 +87,9 @@ public class Board extends Screen {
             int pos = button.getPos();
             button.getButton().onClick(e ->{
 
-                gameWinner = TSolver.boardHasWin(board);
-                if(TSolver.boardHasWin(board).equals(Sign.EMPTY)){
+                gameWinner = (Sign) TSolver.boardHasWin(board)[0];
+                System.out.println(TSolver.boardHasWin(board)[0]);
+                if(gameWinner.equals(Sign.EMPTY)){
                     if(aiModes.contains(currentGameMode)){
                         if(currentGameMover.equals(TPlayer.HUMAN)){
 
@@ -96,22 +98,30 @@ public class Board extends Screen {
                                 button.getButton().updateOwner(Sign.O);
 
                                 currentGameMover = TPlayer.COMPUTER;
-                                gameWinner = TSolver.boardHasWin(board);
+                                gameWinner = (Sign) TSolver.boardHasWin(board)[0];
                             }
                             //if player made move then -> AI make move (Update the current player)
 
                             //once the move is made check for win.
 
                             //If board is full -> game done
-                            Sign winner = TSolver.boardHasWin(board);
+                            Sign winner = (Sign) TSolver.boardHasWin(board)[0];
 
                         }
 
-                        if(currentGameMover.equals(TPlayer.COMPUTER) && TSolver.boardHasWin(board).equals(Sign.EMPTY) && !TSolver.getEmptySpots(board).isEmpty()){
+                        System.out.println(currentGameMode);
+                        if(currentGameMover.equals(TPlayer.COMPUTER) && gameWinner.equals(Sign.EMPTY) && !TSolver.getEmptySpots(board).isEmpty()){
                                 TSolver.aiTurn(board, currentGameMode);
                                 currentGameMover = TPlayer.HUMAN;
-                            gameWinner = TSolver.boardHasWin(board);
+                            gameWinner = (Sign) TSolver.boardHasWin(board)[0];
                         }
+                    }
+                }
+
+                //Highlight winning patterns or losing
+                if(gameWinner.equals(Sign.X) || gameWinner.equals(Sign.O)){
+                    for (Object win : (Object[]) TSolver.boardHasWin(board)[1]){
+                        board.get(win).getButton().setWinningButton(true);
                     }
                 }
             });
@@ -157,6 +167,7 @@ public class Board extends Screen {
                     gameWinner == Sign.O ? "#00ff00" : "#800000"
             );
         }
+
 
 
 
