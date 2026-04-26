@@ -15,7 +15,7 @@ Command: /ttt
 
 - Github actions: You can download the mod from the github actions.
 - Modrinth: Not yet
-- Releases: Not yet
+- Releases: ``https://github.com/CyberZBit/Limbo/releases/tag/Beta``
 
 You can also build the mod yourself:
 - Clone the repository.
