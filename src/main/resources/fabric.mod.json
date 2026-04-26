@@ -3,9 +3,9 @@
 	"id": "limbo",
 	"version": "${version}",
 	"name": "Limbo",
-	"description": "This is an example description! Tell everyone what your mod is about!",
+	"description": "Cool tic tac toe game",
 	"authors": [
-		"Me!"
+		"CyberZ"
 	],
 	"contact": {
 		"homepage": "https://fabricmc.net/",

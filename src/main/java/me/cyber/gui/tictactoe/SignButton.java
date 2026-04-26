@@ -36,8 +36,6 @@ public class SignButton extends LimboButton {
 
     @Override
     protected void renderWidget(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
-
-        //holy crap this is so poorly made
         int x1 = this.getX();
         int y1 = this.getY();
         int x2 = x1 + this.getWidth();

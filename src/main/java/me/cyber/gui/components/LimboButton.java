@@ -7,11 +7,10 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.client.input.AbstractInput;
-import net.minecraft.client.util.ColorLerper;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.ColorHelper;
 
-//TODO: completely redo this button and make it more flexible
+
 public class LimboButton extends PressableWidget {
     private String color;
     private String hcolor;
@@ -34,7 +33,6 @@ public class LimboButton extends PressableWidget {
     public LimboButton(int x, int y, int w, int h) {
         super(x, y, w, h, Text.literal(""));
 
-        //default white
         this.color = "abd05f";
         this.hcolor = "c5ea78";
         buttonWithText = false;
@@ -43,7 +41,6 @@ public class LimboButton extends PressableWidget {
     public LimboButton(int x, int y, int w, int h, Text buttonText, String hexColor) {
         super(x, y, w, h, Text.literal(""));
 
-        //default white
         this.color = "abd05f";
         this.hcolor = "c5ea78";
         buttonWithText = true;
@@ -55,7 +52,6 @@ public class LimboButton extends PressableWidget {
     public LimboButton(int x, int y, int w, int h, Text buttonText, String hexColor, float scale) {
         super(x, y, w, h, Text.literal(""));
 
-        //default white
         this.color = "abd05f";
         this.hcolor = "c5ea78";
         buttonWithText = true;

@@ -6,16 +6,21 @@ import me.cyber.model.TMode;
 import me.cyber.model.TPlayer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class TSolver {
-    public static int getRemeningSlots(HashMap<Integer, Slot> slots) {
+
+    /**
+     * Returns the number of empty spots on the board.
+     * @param board
+     * @return int slots
+     */
+    public static int getRemainingSlots(HashMap<Integer, Slot> board) {
         int count = 0;
 
-        for (Slot g : slots.values()) {
-            if (g.getButton().getSign() == Sign.EMPTY) {
+        for (Slot slot : board.values()) {
+            if (slot.getButton().getSign() == Sign.EMPTY) {
                 count++;
             }
         }
@@ -24,12 +29,16 @@ public class TSolver {
     }
 
 
+    /**
+     * Returns a HashMap of empty spots on the board.
+     * @param board
+     * @return
+     */
     public static HashMap<Integer, Slot> getEmptySpots(HashMap<Integer, Slot> board) {
         HashMap<Integer, Slot> emptySpots = new HashMap<>();
 
         for (Slot slot : board.values()) {
             if (slot.getButton().getSign() == Sign.EMPTY) {
-                // emptySpots.add(slot);
                 emptySpots.put(slot.getPos(), new Slot(slot.getButton(), slot.getPos()));
             }
         }
@@ -37,16 +46,17 @@ public class TSolver {
         return emptySpots;
     }
 
+
     public static void aiTurn(HashMap<Integer, Slot> board, TMode mode) {
         int pos;
         int[] move;
 
         //TODO: Actually make a real Hard mode.
         if (mode.equals(TMode.HARD) || mode.equals(TMode.IMPOSSIBLE)) {
-            if (getRemeningSlots(board) == 9) {
+            if (getRemainingSlots(board) == 9) {
                 pos = (int) (Math.random() * 9) + 1;
             } else {
-                move = minimax(board, getRemeningSlots(board), TPlayer.COMPUTER);
+                move = minimax(board, getRemainingSlots(board), TPlayer.COMPUTER);
                 pos = move[0];
             }
 
@@ -57,7 +67,7 @@ public class TSolver {
 
 
         if (mode.equals(TMode.EASY)) {
-            if (getRemeningSlots(board) == 9) {
+            if (getRemainingSlots(board) == 9) {
                 pos = (int) (Math.random() * 9) + 1;
             }
 
@@ -89,8 +99,8 @@ public class TSolver {
             best = new int[]{-1, 1000};
         }
 
-        if (depth == 0 || !boardHasWin(state)[0].equals(Sign.EMPTY) || getRemeningSlots(state) == 0) {
-            return new int[]{-1, evalute(state)};
+        if (depth == 0 || !boardHasWin(state)[0].equals(Sign.EMPTY) || getRemainingSlots(state) == 0) {
+            return new int[]{-1, evaluate(state)};
         }
 
         for (Slot slot : getEmptySpots(state).values()) {
@@ -139,7 +149,6 @@ public class TSolver {
         for (int[] row : winCheckPatterns) {
             if (!board.get(row[0]).getSign().equals(Sign.EMPTY) && !board.get(row[1]).getSign().equals(Sign.EMPTY) && !board.get(row[2]).getSign().equals(Sign.EMPTY)) {
                 if (board.get(row[0]).getSign() == board.get(row[1]).getSign() && board.get(row[1]).getSign() == board.get(row[2]).getSign()) {
-
                     winningPattern = new Object[]{row[0], row[1], row[2]};
                     return new Object[]{board.get(row[0]).getSign(), winningPattern};
                 }
@@ -151,13 +160,15 @@ public class TSolver {
     }
 
     public static boolean setMove(int pos, TPlayer player, HashMap<Integer, Slot> board) {
-        if (board.containsKey(pos) && board.get(pos).getSign().equals(Sign.EMPTY)) {
-            return true;
-        }
-        return false;
+        return board.containsKey(pos) && board.get(pos).getSign().equals(Sign.EMPTY);
     }
 
-    private static int evalute(HashMap<Integer, Slot> board) {
+    /**
+     * Evaluates the move.
+     * @param board
+     * @return a score
+     */
+    private static int evaluate(HashMap<Integer, Slot> board) {
         int score = 0;
 
         if (boardHasWin(board)[0].equals(Sign.X)) {

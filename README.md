@@ -1,9 +1,26 @@
 # Limbo
 
-## Setup
+## Whats Limbo?
+Limbo is a Fabric Minecraft mod that allows you to play tic tac toe against diffirent AI. 
+- Easy mode: Just random moves by the AI (literally Math.random())
+- Hard mode: Not yet implemented (uses impossible modes algorithm for now)
+- Impossible mode: Uses the minimax algorithm to find the best move and is impossible to win against. 
 
-For setup instructions, please see the [Fabric Documentation page](https://docs.fabricmc.net/develop/getting-started/creating-a-project#setting-up) related to the IDE that you are using.
+## Future plans
+I plan to add a way to play against other players soon. Currently learning how sockets work.
+
+
+## Installation
+Command: /ttt
+
+- Github actions: You can download the mod from the github actions.
+- Modrinth: Not yet
+- Releases: Not yet
+
+You can also build the mod yourself:
+- Clone the repository.
+- Use the included Gradle wrapper to build the project: ``./gradlew build``
+- The built JAR file will be located in the ``build/libs/`` directory.
 
 ## License
-
 This template is available under the CC0 license. Feel free to learn from it and incorporate it in your own projects.
